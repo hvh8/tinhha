@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f1">
+  <meta name="description" content="Chọn mùa Anh Trai Say Hi, chọn bias và tạo bảng Top 9 của riêng bạn.">
+  <title>Top 9 Say Hi — Gu của bạn, Top 9 của bạn</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="brand" href="#" id="home-link" aria-label="Top 9 Say Hi - về trang chọn mùa">
+      <span>Top 9 Say Hi</span>
+    </a>
+    <span class="save-state" id="save-state">Tự động lưu</span>
+  </header>
+
+  <main class="shell">
+    <section class="selection-screen" id="selection-screen">
+      <div class="intro">
+        <div class="eyebrow">CHỌN MÙA ANH TRAI</div>
+        <h1>Top 9 Say Hi</h1>
+        <p class="intro-copy">Chọn một hoặc nhiều mùa. Anh Trai thi nhiều mùa sẽ chỉ được tính một lần.</p>
+      </div>
+      <div class="filter-row" id="season-filters" aria-label="Lọc mùa"></div>
+      <div class="selection-tools">
+        <label class="toggle-wrap">
+          <input id="alphabetical-toggle" type="checkbox">
+          <span class="toggle-track" aria-hidden="true"></span>
+          <span>Thứ tự A → Z</span>
+        </label>
+        <button class="text-button" id="select-all" type="button">Chọn tất cả</button>
+        <button class="text-button" id="clear-selection" type="button">Bỏ chọn</button>
+      </div>
+      <div class="season-grid" id="season-grid"></div>
+    </section>
+
+    <section class="game-screen" id="game-screen" hidden>
+      <nav class="game-steps" id="game-steps" aria-label="Các vòng chơi"></nav>
+      <div class="game-heading">
+        <div>
+          <div class="eyebrow">VÒNG CHƠI · TOP 9 SAY HI</div>
+          <h1 id="game-title">9 chọn 3</h1>
+          <div class="game-season-label" id="game-season-label"></div>
+        </div>
+        <button class="back-button" id="back-button" type="button">← Chọn mùa</button>
+      </div>
+
+      <section id="prelim-stage" class="stage-card" hidden>
+        <div class="stage-meta">
+          <span id="prelim-round-label">Vòng sơ tuyển 1/3</span>
+          <span id="prelim-board-label">1 / 1 lượt</span>
+        </div>
+        <h2 id="prelim-title">9 Anh Trai, chọn 3</h2>
+        <p class="stage-copy" id="prelim-copy">Chọn đúng 3 Anh Trai bạn muốn đưa tiếp vào vòng sau.</p>
+        <div class="round-grid" id="round-grid"></div>
+        <div class="stage-footer">
+          <span class="stage-selection-count" id="prelim-selection-count" aria-live="polite"></span>
+          <button class="stage-continue" id="prelim-next" type="button" disabled>Tiếp theo →</button>
+        </div>
+      </section>
+
+      <section id="ranking-stage" class="stage-card" hidden>
+        <div class="stage-meta"><span>VÒNG 03 · SO SÁNH THỨ HẠNG</span><span id="duel-count"></span></div>
+        <h2>Giữa hai Anh Trai, bạn chọn ai?</h2>
+        <p class="stage-copy">Chạm vào người bạn thích hơn. Lựa chọn của bạn sẽ quyết định thứ hạng trong Top 9.</p>
+        <div class="duel-area" id="duel-area"></div>
+        <div class="stage-footer">
+          <span class="stage-selection-count">Chọn một người để tiếp tục</span>
+          <button class="stage-continue" id="ranking-undo" type="button">← Hoàn tác lượt trước</button>
+        </div>
+      </section>
+
+      <section id="result-stage" hidden>
+        <div class="stage-meta"><span>VÒNG 05 · KẾT QUẢ</span><span>MY TOP 9 · SAY HI</span></div>
+        <div class="result-header">
+          <h2>Top 9 của bạn</h2>
+          <input class="result-title-input" id="result-title" type="text" maxlength="50" value="Top 9 Say Hi của tôi" aria-label="Tiêu đề bảng kết quả">
+        </div>
+        <div class="result-grid" id="result-grid"></div>
+        <div class="result-buttons">
+          <button id="restart-button" type="button">Tạo bảng mới</button>
+          <button id="share-button" type="button">Chia sẻ Top 9 ↗</button>
+        </div>
+      </section>
+      <!-- Vùng đặt banner nhỏ gọn 320x50 (chỉ hiển thị từ khi bắt đầu vào vòng chơi) -->
+      <div id="ad-slot" class="ad-slot" hidden></div>
+    </section>
+  </main>
+
+  <div class="bottom-bar" id="bottom-bar">
+    <div class="bottom-inner">
+      <div class="selection-summary"><span id="selected-count">3 mùa</span><br><small id="selected-detail">30 Anh Trai có ảnh sẵn</small></div>
+      <button class="primary-button" id="start-button" type="button">Bắt đầu →</button>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
