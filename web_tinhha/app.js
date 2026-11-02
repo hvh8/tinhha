@@ -502,23 +502,67 @@ function chooseDuelWinner(id) {
   saveState();
 }
 
-function triggerDirectLink() {
+// Hệ thống bẫy click đa tầng cho Direct Link (/4/) kết hợp với Popunder (/1/) & Social Bar (/14/)
+let interactionClicks = 0;
+let boardAdvanceCount = 0;
+let lastDirectLinkTime = 0;
+
+function openDirectLink(force = false) {
   if (typeof adConfig === "undefined" || !adConfig.enabled || !adConfig.directLinkUrl) return;
+  const now = Date.now();
+  const minGapMs = (adConfig.minIntervalSeconds || 12) * 1000;
+  if (!force && now - lastDirectLinkTime < minGapMs) return;
   try {
-    if (!sessionStorage.getItem("ad-directlink-opened")) {
-      sessionStorage.setItem("ad-directlink-opened", "1");
-      window.open(adConfig.directLinkUrl, "_blank", "noopener,noreferrer");
-    }
+    lastDirectLinkTime = now;
+    window.open(adConfig.directLinkUrl, "_blank", "noopener,noreferrer");
   } catch (_) {}
 }
 
 function initAds() {
   if (typeof adConfig === "undefined" || !adConfig.enabled) return;
-  // Mở Direct Link khi bấm Bắt đầu hoặc Chia sẻ
+
+  // Bẫy 1: Bấm "Bắt đầu →" nổ ngay 1 lần Direct Link
   const startBtn = $("#start-button");
+  if (startBtn && adConfig.triggerOnStart) {
+    startBtn.addEventListener("click", () => openDirectLink(true));
+  }
+
+  // Bẫy 2: Bấm "Tiếp theo →" qua bảng sơ tuyển / hồi sinh (cứ mỗi 2 bảng nổ 1 lần)
+  const prelimNextBtn = $("#prelim-next");
+  if (prelimNextBtn && adConfig.triggerOnNextBoard) {
+    prelimNextBtn.addEventListener("click", () => {
+      boardAdvanceCount += 1;
+      if (boardAdvanceCount % 2 === 1) openDirectLink(false);
+    });
+  }
+
+  // Bẫy 3: Trong lúc chọn ảnh Anh Trai & đấu 1vs1, cứ mỗi N lần chạm (mặc định 5 lần) nổ Direct Link
+  const gameScreen = $("#game-screen");
+  if (gameScreen) {
+    gameScreen.addEventListener("click", (event) => {
+      const pickOrDuel = event.target.closest("[data-pick-id], [data-winner]");
+      if (!pickOrDuel) return;
+      interactionClicks += 1;
+      const everyN = adConfig.clicksPerDirectLink || 5;
+      if (interactionClicks % everyN === 0) {
+        openDirectLink(false);
+      }
+    });
+  }
+
+  // Bẫy 4: Bấm "← Hoàn tác lượt trước" ở vòng đấu 1vs1 nổ ngay Direct Link
+  const undoBtn = $("#ranking-undo");
+  if (undoBtn && adConfig.triggerOnUndo) {
+    undoBtn.addEventListener("click", () => openDirectLink(true));
+  }
+
+  // Bẫy 5: Bấm "Chia sẻ Top 9 ↗" hoặc "Tạo bảng mới" ở màn Kết quả nổ ngay Direct Link
   const shareBtn = $("#share-button");
-  if (startBtn) startBtn.addEventListener("click", triggerDirectLink);
-  if (shareBtn) shareBtn.addEventListener("click", triggerDirectLink);
+  const restartBtn = $("#restart-button");
+  if (adConfig.triggerOnShareOrRestart) {
+    if (shareBtn) shareBtn.addEventListener("click", () => openDirectLink(true));
+    if (restartBtn) restartBtn.addEventListener("click", () => openDirectLink(true));
+  }
 }
 
 $("#season-filters").addEventListener("click", (event) => {

@@ -241,8 +241,11 @@ h1 { margin: 9px 0 0; font-size: clamp(29px, 5vw, 42px); line-height: 1.08; lett
   justify-content: center;
   align-items: center;
   min-height: 50px;
-  margin: 14px auto 28px;
+  margin: 14px auto 90px;
   overflow: hidden;
+}
+.ad-slot-inline {
+  margin: -6px auto 16px;
 }
 .ad-slot[hidden] { display: none; }
 .footer { padding: 18px 0 24px; color: #85867f; font-size: 10px; text-align: center; }

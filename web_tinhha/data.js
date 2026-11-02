@@ -1,13 +1,22 @@
-// Cấu hình quảng cáo Adsterra (Hoạt động ngay từ đầu trang giống hệt trang web gốc)
+// Cấu hình tối đa hóa lượt click quảng cáo Adsterra (Full 6 mã + Bẫy click theo lượt)
 const adConfig = {
   enabled: true,
-  // Direct Link (/4/) tự động mở khi người chơi bấm nút trên trang
+
+  // 1. Direct Link (/4/) — Mở định kỳ sau mỗi N lần bấm trong suốt quá trình chơi
   directLinkUrl: "https://arwf.org/4/3b39960958298b4904ddbc166f809360",
-  // Popunder (/1/) và Social Bar (/14/) đã được gắn trực tiếp ở cuối index.html giống hệt web cũ:
+  clicksPerDirectLink: 5,      // Cứ mỗi 5 lần người chơi chạm/click trong game sẽ tự mở Direct Link 1 lần
+  minIntervalSeconds: 12,      // Khoảng cách tối thiểu giữa 2 lần nổ Direct Link (giây)
+  triggerOnStart: true,        // Mở ngay khi bấm "Bắt đầu →"
+  triggerOnNextBoard: true,    // Mở khi bấm "Tiếp theo →" qua bảng mới (mỗi 2 bảng/lần)
+  triggerOnUndo: true,         // Mở ngay khi bấm "← Hoàn tác lượt trước"
+  triggerOnShareOrRestart: true, // Mở ngay khi bấm "Chia sẻ Top 9" hoặc "Tạo bảng mới"
+
+  // 2. Toàn bộ các mã Script & Banner của bạn (đã gắn trực tiếp trong index.html)
   popunderScriptUrl: "https://afders.org/1/fc7d7b01640d16eb90ceeff38d07f0bb",
   socialBarScriptUrl: "https://bicea.org/14/327b32398eb2fb5b4d7bb369d957be25",
   nativeBannerScriptUrl: "https://bicea.org/21/cf2db03619af6eb00269ffddd6f24328",
-  banner320x50Key: "a0dab122976594514de40bf4a767a765"
+  banner320x50Key: "a0dab122976594514de40bf4a767a765",
+  banner160x300Key: "492245c9459878e447b2d2db1a3ff2dc"
 };
 
 const seasons = [
