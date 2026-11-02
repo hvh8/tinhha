@@ -442,7 +442,6 @@ function renderGame() {
   if (game.stage === "prelim") renderPrelim();
   if (game.stage === "ranking") renderDuel();
   if (game.stage === "result") renderResult();
-  syncAdsByStage();
 }
 
 function render() {
@@ -452,7 +451,6 @@ function render() {
   $("#game-screen").hidden = !gameStarted;
   $("#bottom-bar").hidden = gameStarted;
   if (gameStarted) renderGame();
-  else syncAdsByStage();
 }
 
 function toggleSeason(id) {
@@ -504,43 +502,7 @@ function chooseDuelWinner(id) {
   saveState();
 }
 
-// Quản lý hiển thị quảng cáo kín đáo theo đúng quy trình 5 phần:
-// Phần 1 (Chọn mùa): Sạch 100%, không quảng cáo
-// Phần 2 (Sơ tuyển) & Phần 3 (Hồi sinh): Chỉ hiện banner nhỏ 320x50 dưới chân trang
-// Phần 4 (So sánh 1vs1): Nạp âm thầm Popunder khi người chơi đã đi tới gần cuối game
-// Phần 5 (Kết quả): Kích hoạt Direct Link 1 lần duy nhất khi bấm Chia sẻ / Tạo bảng mới
-let bannerLoaded = false;
-let popunderLoaded = false;
-
-function loadCompactBanner() {
-  if (bannerLoaded || !adConfig?.compactBanner320x50?.enabled) return;
-  const adSlot = $("#ad-slot");
-  if (!adSlot) return;
-  bannerLoaded = true;
-  const cfg = adConfig.compactBanner320x50;
-  window.atOptions = {
-    key: cfg.key,
-    format: cfg.format || "iframe",
-    height: cfg.height || 50,
-    width: cfg.width || 320,
-    params: {}
-  };
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = cfg.scriptUrl;
-  adSlot.appendChild(script);
-}
-
-function loadLatePopunder() {
-  if (popunderLoaded || !adConfig?.latePopunderScriptUrl) return;
-  popunderLoaded = true;
-  const script = document.createElement("script");
-  script.dataset.cfasync = "false";
-  script.src = adConfig.latePopunderScriptUrl;
-  document.body.appendChild(script);
-}
-
-function triggerDirectLinkOnce() {
+function triggerDirectLink() {
   if (typeof adConfig === "undefined" || !adConfig.enabled || !adConfig.directLinkUrl) return;
   try {
     if (!sessionStorage.getItem("ad-directlink-opened")) {
@@ -550,40 +512,13 @@ function triggerDirectLinkOnce() {
   } catch (_) {}
 }
 
-function syncAdsByStage() {
-  const adSlot = $("#ad-slot");
-  if (typeof adConfig === "undefined" || !adConfig.enabled) {
-    if (adSlot) adSlot.hidden = true;
-    return;
-  }
-
-  // Phần 1: Màn hình chọn mùa -> Ẩn toàn bộ quảng cáo
-  if (!gameStarted || !state.game) {
-    if (adSlot) adSlot.hidden = true;
-    return;
-  }
-
-  // Phần 2 -> Phần 5: Hiện thanh banner nhỏ gọn 320x50 ở dưới chân vùng chơi
-  if (adSlot && adConfig.compactBanner320x50?.enabled) {
-    adSlot.hidden = false;
-    loadCompactBanner();
-  }
-
-  // Phần 4 (So sánh 1vs1): Người chơi đã chọn xong Top 9 ứng viên, mới nạp Popunder
-  if (state.game.stage === "ranking" || state.game.stage === "result") {
-    loadLatePopunder();
-  }
-}
-
 function initAds() {
   if (typeof adConfig === "undefined" || !adConfig.enabled) return;
-  syncAdsByStage();
-
-  // Phần 5 (Kết quả): Chỉ mở Direct Link 1 lần khi người chơi bấm Chia sẻ hoặc Tạo bảng mới
+  // Mở Direct Link khi bấm Bắt đầu hoặc Chia sẻ
+  const startBtn = $("#start-button");
   const shareBtn = $("#share-button");
-  const restartBtn = $("#restart-button");
-  if (shareBtn) shareBtn.addEventListener("click", triggerDirectLinkOnce);
-  if (restartBtn) restartBtn.addEventListener("click", triggerDirectLinkOnce);
+  if (startBtn) startBtn.addEventListener("click", triggerDirectLink);
+  if (shareBtn) shareBtn.addEventListener("click", triggerDirectLink);
 }
 
 $("#season-filters").addEventListener("click", (event) => {

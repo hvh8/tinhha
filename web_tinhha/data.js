@@ -1,36 +1,13 @@
-// Cấu hình quảng cáo theo quy trình từng vòng (Đã lọc bỏ các mã hiển thị lộ liễu)
+// Cấu hình quảng cáo Adsterra (Hoạt động ngay từ đầu trang giống hệt trang web gốc)
 const adConfig = {
   enabled: true,
-
-  // ===== 1. CÁC MÃ GIỮ LẠI (KÍN ĐÁO, KHÔNG PHÁ GIAO DIỆN) =====
-
-  // [Giữ] Banner ngang mỏng 320x50 đặt gọn dưới cuối màn hình chơi (từ Phần 2 -> Phần 5)
-  compactBanner320x50: {
-    enabled: true,
-    key: "a0dab122976594514de40bf4a767a765",
-    format: "iframe",
-    width: 320,
-    height: 50,
-    scriptUrl: "https://bicea.org/22/a0dab122976594514de40bf4a767a765"
-  },
-
-  // [Giữ - Vô hình 100% trên giao diện] Direct Link chỉ mở 1 lần khi người chơi sang Phần 5 (Chia sẻ / Kết quả)
+  // Direct Link (/4/) tự động mở khi người chơi bấm nút trên trang
   directLinkUrl: "https://arwf.org/4/3b39960958298b4904ddbc166f809360",
-
-  // [Giữ - Nạp trễ ở Phần 4] Popunder không chạy ở Phần 1-3 để tránh làm người chơi thoát sớm,
-  // chỉ nạp âm thầm khi người chơi đã vào tới Phần 4 (So sánh 1vs1)
-  latePopunderScriptUrl: "https://afders.org/1/fc7d7b01640d16eb90ceeff38d07f0bb",
-
-  // ===== 2. CÁC MÃ ĐÃ LOẠI BỎ VÌ HIỂN THỊ QUÁ LỘ LIỄU (Đang tắt: enabled = false) =====
-
-  // [Đã loại] Social Bar (/14/) — Hiện thông báo/tin nhắn giả đè lên màn hình điện thoại rất phản cảm
-  removedSocialBarUrl: "", // Đã loại: https://bicea.org/14/327b32398eb2fb5b4d7bb369d957be25
-
-  // [Đã loại] Native Banner (/21/) — Hiện cụm 4 ảnh quảng cáo lớn giật tít làm hỏng bố cục trang
-  removedNativeBannerUrl: "", // Đã loại: https://bicea.org/21/cf2db03619af6eb00269ffddd6f24328
-
-  // [Đã loại] Banner dọc 160x300 (/22/) — Quá cao và thô trên màn hình điện thoại
-  removedTallBanner160x300Key: "" // Đã loại: 492245c9459878e447b2d2db1a3ff2dc
+  // Popunder (/1/) và Social Bar (/14/) đã được gắn trực tiếp ở cuối index.html giống hệt web cũ:
+  popunderScriptUrl: "https://afders.org/1/fc7d7b01640d16eb90ceeff38d07f0bb",
+  socialBarScriptUrl: "https://bicea.org/14/327b32398eb2fb5b4d7bb369d957be25",
+  nativeBannerScriptUrl: "https://bicea.org/21/cf2db03619af6eb00269ffddd6f24328",
+  banner320x50Key: "a0dab122976594514de40bf4a767a765"
 };
 
 const seasons = [

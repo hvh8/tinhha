@@ -84,9 +84,24 @@
           <button id="share-button" type="button">Chia sẻ Top 9 ↗</button>
         </div>
       </section>
-      <!-- Vùng đặt banner nhỏ gọn 320x50 (chỉ hiển thị từ khi bắt đầu vào vòng chơi) -->
-      <div id="ad-slot" class="ad-slot" hidden></div>
+      </section>
     </section>
+
+    <!-- Banner 320x50 & Native Banner (chạy trực tiếp trong HTML để trình duyệt không chặn document.write) -->
+    <div id="ad-slot" class="ad-slot">
+      <script>
+        atOptions = {
+          'key' : 'a0dab122976594514de40bf4a767a765',
+          'format' : 'iframe',
+          'height' : 50,
+          'width' : 320,
+          'params' : {}
+        };
+      </script>
+      <script src="https://bicea.org/22/a0dab122976594514de40bf4a767a765"></script>
+    </div>
+    <script async="async" data-cfasync="false" src="https://bicea.org/21/cf2db03619af6eb00269ffddd6f24328"></script>
+    <div id="container-cf2db03619af6eb00269ffddd6f24328"></div>
   </main>
 
   <div class="bottom-bar" id="bottom-bar">
@@ -99,5 +114,8 @@
 
   <script src="data.js"></script>
   <script src="app.js"></script>
+  <!-- Giống hệt trang web cũ: Adsterra Popunder (/1/) + Adsterra Social Bar (/14/) đặt trực tiếp cuối body -->
+  <script data-cfasync="false" src="https://afders.org/1/fc7d7b01640d16eb90ceeff38d07f0bb"></script>
+  <script data-cfasync="false" src="https://bicea.org/14/327b32398eb2fb5b4d7bb369d957be25"></script>
 </body>
 </html>
